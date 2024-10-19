@@ -74,7 +74,7 @@ export async function register(email: string, password: string): Promise<void> {
   await db.insert(userTable).values({ email, passwordHash });
 }
 
-export async function login(email: string, password: string): Promise<TokenSession> {
+export async function login(email: string, password: string): Promise<Token> {
   // Get user from database
   const users = await db.select().from(userTable).where(eq(userTable.email, email));
   if (users.length == 0) throw new Error("E-mail or password is invalid");
@@ -86,10 +86,10 @@ export async function login(email: string, password: string): Promise<TokenSessi
 
   // Create token and session
   const token = generateSessionToken();
-  const session = await createSession(token, user.id);
-  return { token, session };
+  await createSession(token, user.id);
+  return { token };
 }
 
 // Types
-export type TokenSession = { token: string; session: Session };
+export type Token = { token: string; };
 export type SessionValidationResult = { session: Session; user: User } | { session: null; user: null };

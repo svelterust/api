@@ -1,18 +1,17 @@
 import { Elysia, t } from "elysia";
-import { swagger } from "@elysiajs/swagger";
 import { auth } from "$lib/elysia";
 import { login, register } from "$lib/session";
+import { swagger } from "@elysiajs/swagger";
 
 const app = new Elysia()
   .use(auth)
   .use(swagger())
-  .onError(({ error, redirect }) => {
+  .onError(({ redirect }) => {
     return redirect("/swagger");
   })
   .post("/register", async ({ body: { email, password } }) => {
     await register(email, password);
-    const { token } = await login(email, password);
-    return { token };
+    return login(email, password);
   }, {
     body: t.Object({
       email: t.String(),
@@ -23,8 +22,7 @@ const app = new Elysia()
     }),
   })
   .post("/login", async ({ body: { email, password } }) => {
-    const { token } = await login(email, password);
-    return { token };
+    return login(email, password);
   }, {
     body: t.Object({
       email: t.String(),
