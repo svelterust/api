@@ -14,3 +14,9 @@ export const db = drizzle(client, { schema });
 
 // Run migrations automatically
 await migrate(db, { migrationsFolder: "migrations" });
+
+if (process.env.TURSO_DATABASE_URL && process.env.TURSO_AUTH_TOKEN) {
+  console.log(`📁 Database connected remotely to ${process.env.TURSO_DATABASE_URL}`);
+} else {
+  console.log(`📁 Database running in development mode`);
+}

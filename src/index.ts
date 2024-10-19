@@ -6,8 +6,15 @@ import { swagger } from "@elysiajs/swagger";
 const app = new Elysia()
   .use(auth)
   .use(swagger())
-  .onError(({ redirect }) => {
-    return redirect("/swagger");
+  .onError(({ code, redirect, error }) => {
+    if (code == "NOT_FOUND") {
+      return redirect("/swagger");
+    } else {
+      return {
+        name: error.name,
+        message: error.message,
+      };
+    }
   })
   .post("/register", async ({ body: { email, password } }) => {
     await register(email, password);
