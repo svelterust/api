@@ -1,7 +1,7 @@
 import { Elysia } from "elysia";
 import { validateSessionToken, type SessionValidationResult } from "$lib/session";
 
-// Middleware that fetches user and session from token
+// Middleware for user and session
 export const auth = new Elysia().derive({ as: "global" },
   async (context): Promise<SessionValidationResult> => {
     // Get token from header and validate

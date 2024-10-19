@@ -1,14 +1,16 @@
-import Database from "bun:sqlite";
 import * as schema from "$lib/schema";
-import { drizzle } from "drizzle-orm/bun-sqlite";
-import { migrate } from "drizzle-orm/bun-sqlite/migrator";
+import { createClient } from "@libsql/client";
+import { drizzle } from "drizzle-orm/libsql";
+import { migrate } from "drizzle-orm/libsql/migrator";
 
 // Create database
-const sqlite = new Database(process.env.DATABASE_URL ?? "database.sqlite");
-export const db = drizzle(sqlite, { schema });
+const client = createClient({
+  url: process.env.DATABASE_URL ?? "file:database.sqlite",
+});
+export const db = drizzle(client, { schema });
 
 // Use optimal settings
-db.run(`
+await db.run(`
   PRAGMA journal_mode = WAL;
   PRAGMA busy_timeout = 5000;
   PRAGMA synchronous = NORMAL;
@@ -18,4 +20,4 @@ db.run(`
 `);
 
 // Run migrations automatically
-migrate(db, { migrationsFolder: "migrations" });
+await migrate(db, { migrationsFolder: "migrations" });
