@@ -1,4 +1,4 @@
-app = "api-cool-field"
+app = "api-cool-shadow"
 primary_region = "arn"
 
 [http_service]
