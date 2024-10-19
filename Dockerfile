@@ -1,35 +1,18 @@
-FROM oven/bun AS build
+FROM oven/bun:slim
 
 WORKDIR /app
 
-# Cache packages
-COPY package.json package.json
-COPY bun.lockb bun.lockb
-
+# Install packages
+ENV NODE_ENV=production
+COPY package.json bun.lockb ./
 RUN bun install
 
-COPY ./src ./src
-COPY ./migrations ./migrations
-COPY ./tsconfig.json ./tsconfig.json
+# Copy source code
+COPY src ./src
+COPY migrations ./migrations
+COPY tsconfig.json ./tsconfig.json
+COPY drizzle.config.ts ./drizzle.config.ts
 
-ENV NODE_ENV=production
-
-RUN bun build \
-    --compile \
-    --minify-whitespace \
-    --minify-syntax \
-    --target bun \
-    --outfile api \
-    ./src/index.ts
-
-FROM gcr.io/distroless/base
-
-WORKDIR /app
-
-COPY --from=build /app/api api
-
-ENV NODE_ENV=production
-
-CMD ["./api"]
-
+# Start the server
 EXPOSE 3000
+CMD ["bun", "src/index.ts"]
