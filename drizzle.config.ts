@@ -5,6 +5,7 @@ export default {
   out: "migrations",
   schema: "src/lib/schema.ts",
   dbCredentials: {
-    url: process.env.DATABASE_URL ?? "file:database.sqlite",
+    url: process.env.TURSO_DATABASE_URL ?? "file:database.sqlite",
+    authToken: process.env.TURSO_AUTH_TOKEN,
   },
 } satisfies Config;
