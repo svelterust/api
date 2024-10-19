@@ -1,7 +1,7 @@
-import { db } from "./database";
+import { db } from "$lib/database";
 import { randomBytes } from "crypto";
 import { eq, getTableColumns } from "drizzle-orm";
-import { sessionTable, userTable, type Session, type User } from "./schema";
+import { sessionTable, userTable, type Session, type User } from "$lib/schema";
 
 export function generateSessionToken(): string {
   return randomBytes(20).toString("base64url");

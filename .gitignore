@@ -39,3 +39,4 @@ yarn-error.log*
 **/*.log
 package-lock.json
 **/*.bun
+database.sqlite*

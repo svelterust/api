@@ -1,10 +1,10 @@
 import Database from "bun:sqlite";
-import * as schema from "./schema";
+import * as schema from "$lib/schema";
 import { drizzle } from "drizzle-orm/bun-sqlite";
 import { migrate } from "drizzle-orm/bun-sqlite/migrator";
 
 // Create database
-const sqlite = new Database(process.env.DATABASE_URL ?? "file:database.sqlite");
+const sqlite = new Database(process.env.DATABASE_URL ?? "database.sqlite");
 export const db = drizzle(sqlite, { schema });
 
 // Use optimal settings

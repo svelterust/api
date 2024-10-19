@@ -5,6 +5,6 @@ export default {
   out: "migrations",
   schema: "src/lib/schema.ts",
   dbCredentials: {
-    url: process.env.DATABASE_URL ?? "file:database.sqlite",
+    url: process.env.DATABASE_URL ?? "database.sqlite",
   },
 } satisfies Config;
